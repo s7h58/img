@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>사진과 동영상 추가 레이아웃</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            background-color: #f5f5f5;
+        }
+        .container {
+            width: 90%;
+            max-width: 600px;
+            text-align: center;
+        }
+        #media-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 10px;
+            margin-top: 20px;
+        }
+        .media-item {
+            position: relative;
+            background-color: #ddd;
+            padding: 10px;
+            border-radius: 8px;
+            overflow: hidden;
+            text-align: center;
+        }
+        .add-button {
+            font-size: 24px;
+            padding: 10px 20px;
+            margin-top: 20px;
+            cursor: pointer;
+            border: none;
+            border-radius: 5px;
+            background-color: #4CAF50;
+            color: #fff;
+        }
+        input[type="file"] {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>사진과 동영상 추가하기</h2>
+    <label for="file-input" class="add-button">+ 추가하기</label>
+    <input type="file" id="file-input" accept="image/*,video/*" multiple>
+    
+    <div id="media-container"></div>
+</div>
+
+<script>
+    const fileInput = document.getElementById("file-input");
+    const mediaContainer = document.getElementById("media-container");
+
+    fileInput.addEventListener("change", (event) => {
+        const files = event.target.files;
+
+        for (let file of files) {
+            const mediaItem = document.createElement("div");
+            mediaItem.classList.add("media-item");
+
+            if (file.type.startsWith("image/")) {
+                const img = document.createElement("img");
+                img.src = URL.createObjectURL(file);
+                img.style.width = "100%";
+                img.style.borderRadius = "8px";
+                mediaItem.appendChild(img);
+            } else if (file.type.startsWith("video/")) {
+                const video = document.createElement("video");
+                video.src = URL.createObjectURL(file);
+                video.controls = true;
+                video.style.width = "100%";
+                video.style.borderRadius = "8px";
+                mediaItem.appendChild(video);
+            }
+
+            mediaContainer.appendChild(mediaItem);
+        }
+        fileInput.value = ""; // 파일 선택 초기화
+    });
+</script>
+
+</body>
+</html>
